@@ -20,7 +20,8 @@ import java.util.Set;
 public class User implements Serializable {
     @Id
     @Column(name = "user_id")
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
 
     private String username;
 
@@ -41,8 +42,6 @@ public class User implements Serializable {
     @Column(columnDefinition = "BOOLEAN")
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "user")
-    private List<Product> products;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(

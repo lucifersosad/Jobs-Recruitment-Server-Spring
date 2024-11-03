@@ -20,6 +20,7 @@ import spring.api.uteating.repository.UserRepository;
 import spring.api.uteating.service.JwtService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -44,7 +45,7 @@ public class AuthController {
     public String welcome() {
         return "Welcome bitch";
     }
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDTO signUpDto) {
         User user = new User();
         BeanUtils.copyProperties(signUpDto, user);
@@ -59,19 +60,20 @@ public class AuthController {
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<UserModel> loginUser(@RequestParam("usernameOrEmail") String usernameOrEmail,
-                                               @RequestParam("password") String password){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody SignInDTO authRequest){
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsernameOrEmail(), authRequest.getPassword())
+        );
+        Map<String, Object> tokenDetails = jwtService.generateToken(authRequest.getUsernameOrEmail(), 2);
+        UserModel userModel = new UserModel();
+        User user = userRepository.getUserByUsernameOrEmail(authRequest.getUsernameOrEmail());
+        BeanUtils.copyProperties(user, userModel);
 
-        if (authentication.isAuthenticated()) {
-            UserModel userModel = new UserModel();
-            User user = userRepository.getUserByUsernameOrEmail(usernameOrEmail);
-            BeanUtils.copyProperties(user, userModel);
-            return ResponseEntity.ok(userModel);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-        }
+        Map<String, Object> response = new HashMap<>(tokenDetails);
+        response.put("info", userModel);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/generateToken")
@@ -79,7 +81,8 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsernameOrEmail(), authRequest.getPassword())
         );
-        return jwtService.generateTokenWithExpiry(authRequest.getUsernameOrEmail());
+//        return jwtService.generateTokenWithExpiry(authRequest.getUsernameOrEmail());
+        return jwtService.generateToken(authRequest.getUsernameOrEmail(), 2);
 
 //        if (authentication.isAuthenticated()) {
 //            return jwtService.generateTokenWithExpiry(authRequest.getUsernameOrEmail());

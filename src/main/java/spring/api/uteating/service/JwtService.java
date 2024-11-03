@@ -31,6 +31,18 @@ public class JwtService {
         return tokenDetails;
     }
 
+    public Map<String, Object> generateToken(String userName, int roleId) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role_id", roleId);
+        Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 1);
+        String token = createToken(claims, userName, expirationDate);
+
+        Map<String, Object> tokenDetails = new HashMap<>();
+        tokenDetails.put("access_token", token);
+        tokenDetails.put("expires_at", expirationDate);
+        return tokenDetails;
+    }
+
 //    public String generateToken(String userName) {
 //        Map<String, Object> claims = new HashMap<>();
 //        return createToken(claims, userName);
@@ -53,6 +65,10 @@ public class JwtService {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public int extractRoleId(String token) {
+        return extractClaim(token, claims -> claims.get("role_id", Integer.class));
     }
 
     public Date extractExpiration(String token) {

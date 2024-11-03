@@ -16,6 +16,7 @@ import java.util.Map;
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+    //CATCH
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Map<String, Object>> handleBadCredentialsException(BadCredentialsException ex) {
@@ -45,6 +46,4 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         response.put("statusCode", 401);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
-
-    // Bạn có thể thêm các phương thức khác để xử lý các ngoại lệ khác nếu cần
 }
