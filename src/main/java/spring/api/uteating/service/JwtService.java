@@ -97,6 +97,14 @@ public class JwtService {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())|| username.equals(((MyUserService) userDetails).getEmail()) && !isTokenExpired(token));
     }
+    public String extractEmailFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(SECRET)  // Đảm bảo rằng SECRET chính xác
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
 
 
 }

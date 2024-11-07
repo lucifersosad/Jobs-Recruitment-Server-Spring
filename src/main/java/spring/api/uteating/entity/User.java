@@ -41,6 +41,8 @@ public class User implements Serializable {
 
     @Column(columnDefinition = "BOOLEAN")
     private Boolean enabled;
+    @Column(columnDefinition = "BOOLEAN")
+    private Boolean vertified;
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

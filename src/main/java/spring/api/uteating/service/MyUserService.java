@@ -67,4 +67,8 @@ public class MyUserService implements UserDetails {
     public boolean isEnabled() {
         return user.getEnabled();
     }
+
+    public boolean isVertified() {
+        return user.getVertified();
+    }
 }
