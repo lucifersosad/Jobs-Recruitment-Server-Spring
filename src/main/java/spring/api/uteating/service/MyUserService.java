@@ -15,7 +15,7 @@ import java.util.Set;
 public class MyUserService implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
-    private spring.api.uteating.entity.User user;
+    private User user;
 
     private List<GrantedAuthority> authorities;
 
@@ -41,7 +41,7 @@ public class MyUserService implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 
     public String getEmail() {

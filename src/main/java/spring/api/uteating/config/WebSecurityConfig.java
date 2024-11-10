@@ -54,13 +54,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
-                .authorizeHttpRequests().requestMatchers("/api/admin/auth/**").permitAll()
+                .authorizeHttpRequests().requestMatchers("/v1/api/admin/auth/**").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
+                .authorizeHttpRequests().requestMatchers("/v1/api/admin/**").hasAnyAuthority("EMPLOYER")
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/user/**").hasAnyAuthority("USER")
+                .authorizeHttpRequests().requestMatchers("/api/user/**").hasAnyAuthority("EMPLOYER")
                 .and()
                 .authorizeHttpRequests().requestMatchers("/**").permitAll()
                 .and()

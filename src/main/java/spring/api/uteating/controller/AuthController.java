@@ -63,11 +63,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody SignInDTO authRequest){
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUsernameOrEmail(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
-        Map<String, Object> tokenDetails = jwtService.generateToken(authRequest.getUsernameOrEmail(), 2);
+        Map<String, Object> tokenDetails = jwtService.generateToken(authRequest.getEmail(), 2);
         UserModel userModel = new UserModel();
-        User user = userRepository.getUserByUsernameOrEmail(authRequest.getUsernameOrEmail());
+        User user = userRepository.getUserByUsernameOrEmail(authRequest.getEmail());
         BeanUtils.copyProperties(user, userModel);
 
         Map<String, Object> response = new HashMap<>(tokenDetails);
@@ -79,10 +79,10 @@ public class AuthController {
     @PostMapping("/generateToken")
     public Map<String, Object> authenticateAndGetToken(@RequestBody SignInDTO authRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUsernameOrEmail(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
 //        return jwtService.generateTokenWithExpiry(authRequest.getUsernameOrEmail());
-        return jwtService.generateToken(authRequest.getUsernameOrEmail(), 2);
+        return jwtService.generateToken(authRequest.getEmail(), 2);
 
 //        if (authentication.isAuthenticated()) {
 //            return jwtService.generateTokenWithExpiry(authRequest.getUsernameOrEmail());

@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("${api.BASE_URL}/admin")
 public class AdminController {
 
     @Autowired

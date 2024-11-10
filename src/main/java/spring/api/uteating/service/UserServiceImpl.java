@@ -42,23 +42,18 @@ public class UserServiceImpl implements UserDetailsService {
         return userRepository.getUserByUsernameOrEmail(username);
     }
 
-    public UserModel getUserModel(String idUser) {
+    public UserModel getUserModel(Long idUser) {
         if (!existsById(idUser)) {
             return null;
         }
         User user = getById(idUser);
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(user, userModel);
-        if (isAdmin(user)) {
-            userModel.setAdmin(true);
-        } else {
-            userModel.setAdmin(false);
-        }
         return userModel;
     }
 
     public UserModel updateUser(UserModel model) {
-        String userId = model.getUserId();
+        Long userId = model.getId();
         if (userId != null) {
             Optional<User> userOptional = userRepository.findById(userId);
             if (userOptional.isPresent()) {
@@ -66,8 +61,8 @@ public class UserServiceImpl implements UserDetailsService {
                 if (model.getPhone() != null && !model.getPhone().isEmpty()) {
                     user.setPhone(model.getPhone());
                 }
-                if (model.getAvatarURL() != null && !model.getAvatarURL().isEmpty()) {
-                    user.setAvatarURL(model.getAvatarURL());
+                if (model.getAvatar() != null && !model.getAvatar().isEmpty()) {
+                    user.setAvatar(model.getAvatar());
                 }
                 if (model.getFullName() != null && !model.getFullName().isEmpty()) {
                     user.setFullName(model.getFullName());
@@ -93,39 +88,11 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     @Deprecated
-    public User getById(String s) {
-        return userRepository.getById(s);
+    public User getById(Long aLong) {
+        return userRepository.getById(aLong);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public List<User> findAllById(Iterable<String> strings) {
-        return userRepository.findAllById(strings);
-    }
-
-    public <S extends User> S save(S entity) {
-        return userRepository.save(entity);
-    }
-
-    public long count() {
-        return userRepository.count();
-    }
-
-    public void deleteById(String s) {
-        userRepository.deleteById(s);
-    }
-
-    public <S extends User> Optional<S> findOne(Example<S> example) {
-        return userRepository.findOne(example);
-    }
-
-    public boolean existsById(String s) {
-        return userRepository.existsById(s);
-    }
-
-    public Optional<User> findById(String s) {
-        return userRepository.findById(s);
+    public boolean existsById(Long aLong) {
+        return userRepository.existsById(aLong);
     }
 }

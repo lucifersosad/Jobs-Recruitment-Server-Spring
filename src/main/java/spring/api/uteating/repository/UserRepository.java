@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import spring.api.uteating.entity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
-    @Query("select u from User u where u.username = :usernameOrEmail or u.email = :usernameOrEmail")
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Query("select u from User u where u.email = :usernameOrEmail")
     User getUserByUsernameOrEmail(@Param("usernameOrEmail") String usernameOrEmail);
 }
