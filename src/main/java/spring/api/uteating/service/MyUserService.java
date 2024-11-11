@@ -3,6 +3,8 @@ package spring.api.uteating.service;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import spring.api.uteating.entity.Admin;
+import spring.api.uteating.entity.Employer;
 import spring.api.uteating.entity.Role;
 import spring.api.uteating.entity.User;
 
@@ -15,17 +17,20 @@ import java.util.Set;
 public class MyUserService implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
-    private spring.api.uteating.entity.User user;
+    private User user;
 
     private List<GrantedAuthority> authorities;
 
     public MyUserService(User user) {
-        this.user = user;
-        Set<Role> roles = user.getRoles();
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        if (user instanceof Employer) {
+            authorities.add(new SimpleGrantedAuthority("EMPLOYER"));
+        } else if (user instanceof Admin) {
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("CANDIDATE"));
         }
+        this.user = user;
         this.authorities = authorities;
     }
 
@@ -41,7 +46,7 @@ public class MyUserService implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 
     public String getEmail() {

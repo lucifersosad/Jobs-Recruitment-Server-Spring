@@ -39,14 +39,14 @@ public class UserController {
         }
     }
 
-    boolean isAuthorityUser(String userId, Authentication authentication) {
+    boolean isAuthorityUser(Long userId, Authentication authentication) {
         String username = authentication.getName();
         User authUser = userService.getUser(username);
-        return authUser.getUserId().equals(Long.parseLong(userId));
+        return authUser.getUserId().equals(userId);
     }
 
     @GetMapping("/authority/{userid}")
-    public ResponseEntity<?> authority(@PathVariable ("userid") String userId, Authentication authentication) {
+    public ResponseEntity<?> authority(@PathVariable ("userid") Long userId, Authentication authentication) {
         try {
             if (!isAuthorityUser(userId, authentication)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorReponse("Ban khong duoc cap quyen"));
@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @GetMapping("/{userid}")
-    public UserModel showInfornation(@PathVariable ("userid") String userId) {
+    public UserModel showInfornation(@PathVariable ("userid") Long userId) {
         return userService.getUserModel(userId);
     }
 

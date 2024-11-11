@@ -11,5 +11,9 @@ import org.springframework.stereotype.Component;
 public class ApiConfig {
     @Value("${api.BASE_URL}")
     private String baseUrl;
+    @Value("${prefix.ADMIN}")
+    private String prefixAdmin;
+    @Value("${prefix.EMPLOYER}")
+    private String prefixEmployer;
 }
 

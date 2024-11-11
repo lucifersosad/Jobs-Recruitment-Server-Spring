@@ -21,7 +21,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Map<String, Object>> handleBadCredentialsException(BadCredentialsException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Xảy ra lỗi");
+        response.put("message", ex.getMessage());
         response.put("error", "Unauthorized");
         response.put("statusCode", 401);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -31,19 +31,19 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Xảy ra lỗi");
+        response.put("message", ex.getMessage() + " - access denied");
         response.put("error", "Unauthorized");
         response.put("statusCode", 401);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Xảy ra lỗi");
-        response.put("error", "Unauthorized");
-        response.put("statusCode", 401);
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        response.put("message", ex.getMessage());
+        response.put("error", "Bad Request");
+        response.put("statusCode", 400);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

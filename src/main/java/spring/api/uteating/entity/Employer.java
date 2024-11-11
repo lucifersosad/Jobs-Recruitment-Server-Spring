@@ -1,5 +1,6 @@
 package spring.api.uteating.entity;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,16 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "employers")
-public class Employer implements Serializable {
-    @Id
-    private Long id;
+public class Employer extends User implements Serializable {
 
     private String companyName;
 
     private String position;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id", referencedColumnName = "user_id")
-    private User user;
 }
