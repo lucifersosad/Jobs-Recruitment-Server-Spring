@@ -1,9 +1,9 @@
-package spring.api.uteating.model;
+package spring.api.uteating.dto;
 
 import lombok.Data;
 
 @Data
-public class SignInDTO {
+public class LoginDTO {
     private String email;
     private String password;
 }

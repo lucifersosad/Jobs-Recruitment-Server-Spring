@@ -1,19 +1,24 @@
 package spring.api.uteating.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import spring.api.uteating.entity.Role;
+import spring.api.uteating.entity.User;
 
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserModel {
-    private String userId;
-    private String fullName;
-    private String username;
+    private Long id;
+    private String full_name;
     private String email;
-    private String avatarURL;
+    private String avatar;
     private String phone;
-    @JsonProperty("admin")
-    private boolean isAdmin;
+    private String address;
+    private String gender;
+    private boolean status;
 }

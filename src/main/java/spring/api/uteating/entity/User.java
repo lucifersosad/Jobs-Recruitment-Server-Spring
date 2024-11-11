@@ -17,13 +17,12 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
-    private String username;
 
     @Column(name = "full_name")
     private String fullName;
@@ -34,13 +33,15 @@ public class User implements Serializable {
 
     private String phone;
 
-    @Column(name = "avatar_url")
-    private String avatarURL;
+    private String address;
+
+    @Column(name = "avatar")
+    private String avatar;
 
     private String password;
 
     @Column(columnDefinition = "BOOLEAN")
-    private Boolean enabled;
+    private Boolean status;
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
