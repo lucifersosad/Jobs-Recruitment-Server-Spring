@@ -1,11 +1,12 @@
 package spring.api.uteating.controller.admin;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.api.uteating.dto.ResponseDTO;
+import spring.api.uteating.dto.UpdateStatusRequest;
+import spring.api.uteating.entity.Employer;
 import spring.api.uteating.mapper.EmployerMapper;
 import spring.api.uteating.model.EmployerModel;
 import spring.api.uteating.repository.EmployerRepository;
@@ -30,8 +31,25 @@ public class EmployerController {
     public List<EmployerModel> getEmployers() {
         return employerService.getEmployers().stream().map(employerMapper::toEmployerModel).toList();
     }
-//    public ResponseEntity<ResponseDTO<List<EmployerModel>>> getAllEmployers() {
-//        List<EmployerModel> data = employerService.getAllEmployers();
-//        return ResponseUtil.successResponse(data, "Truy vấn thành công");
-//    }
+
+    @GetMapping("/{id}")
+    public EmployerModel getEmployer(@PathVariable Long id) {
+        Employer employer = employerService.validateAndGetEmployer(id);
+        return employerMapper.toEmployerModel(employer);
+    }
+
+    @PutMapping("/{id}/status")
+    public EmployerModel updateStatusEmployer(@PathVariable Long id, @Valid @RequestBody UpdateStatusRequest updateStatusRequest) {
+        Employer employer = employerService.validateAndGetEmployer(id);
+        employerMapper.updateStatusFromDto(updateStatusRequest, employer);
+        employer = employerService.saveEmployer(employer);
+        return employerMapper.toEmployerModel(employer);
+    }
+
+    @DeleteMapping("/{id}")
+    public EmployerModel deleteEmployer(@PathVariable Long id) {
+        Employer employer = employerService.validateAndGetEmployer(id);
+        employerService.deleteEmployer(employer);
+        return employerMapper.toEmployerModel(employer);
+    }
 }

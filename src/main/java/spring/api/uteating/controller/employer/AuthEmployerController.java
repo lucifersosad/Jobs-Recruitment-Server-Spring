@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.api.uteating.dto.EmployerRegisterDTO;
+import spring.api.uteating.dto.EmployerRegisterRequest;
 import spring.api.uteating.dto.LoginDTO;
 import spring.api.uteating.entity.Employer;
+import spring.api.uteating.mapper.EmployerMapper;
 import spring.api.uteating.model.EmployerModel;
 import spring.api.uteating.repository.EmployerRepository;
+import spring.api.uteating.service.EmployerService;
 import spring.api.uteating.service.JwtService;
 
 import java.util.HashMap;
@@ -40,12 +42,18 @@ public class AuthEmployerController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private EmployerMapper employerMapper;
+
+    @Autowired
+    private EmployerService employerService;
+
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody EmployerRegisterDTO registerDTO) {
+    public ResponseEntity<?> registerEmployer(@RequestBody EmployerRegisterRequest request) {
         Employer employer = new Employer();
-        BeanUtils.copyProperties(registerDTO, employer);
+        BeanUtils.copyProperties(request, employer);
         employer.setStatus(true);
-        employer.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        employer.setPassword(passwordEncoder.encode(request.getPassword()));
         employerRepository.save(employer);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
