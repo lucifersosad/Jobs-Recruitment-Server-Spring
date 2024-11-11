@@ -52,30 +52,6 @@ public class UserServiceImpl implements UserDetailsService {
         return userModel;
     }
 
-    public UserModel updateUser(UserModel model) {
-        Long userId = model.getId();
-        if (userId != null) {
-            Optional<User> userOptional = userRepository.findById(userId);
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                if (model.getPhone() != null && !model.getPhone().isEmpty()) {
-                    user.setPhone(model.getPhone());
-                }
-                if (model.getAvatar() != null && !model.getAvatar().isEmpty()) {
-                    user.setAvatar(model.getAvatar());
-                }
-                if (model.getFullName() != null && !model.getFullName().isEmpty()) {
-                    user.setFullName(model.getFullName());
-                }
-                userRepository.save(user);
-                UserModel userModel = new UserModel();
-                BeanUtils.copyProperties(user, userModel);
-                return userModel;
-            }
-        }
-        return null;
-    }
-
     @Deprecated
     public User getById(Long aLong) {
         return userRepository.getById(aLong);

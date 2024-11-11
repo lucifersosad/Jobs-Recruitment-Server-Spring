@@ -41,7 +41,7 @@ public class User implements Serializable {
     private String password;
 
     @Column(columnDefinition = "BOOLEAN")
-    private Boolean enabled;
+    private Boolean status;
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -70,6 +70,6 @@ public class MyUserService implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getEnabled();
+        return user.getStatus();
     }
 }

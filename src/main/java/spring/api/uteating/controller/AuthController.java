@@ -49,7 +49,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody SignUpDTO signUpDto) {
         User user = new User();
         BeanUtils.copyProperties(signUpDto, user);
-        user.setEnabled(true);
+        user.setStatus(true);
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
         Role roles = roleRepository.findByName("USER").get();

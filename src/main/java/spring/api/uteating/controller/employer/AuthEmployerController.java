@@ -44,7 +44,7 @@ public class AuthEmployerController {
     public ResponseEntity<?> registerUser(@RequestBody EmployerRegisterDTO registerDTO) {
         Employer employer = new Employer();
         BeanUtils.copyProperties(registerDTO, employer);
-        employer.setEnabled(true);
+        employer.setStatus(true);
         employer.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         employerRepository.save(employer);
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);

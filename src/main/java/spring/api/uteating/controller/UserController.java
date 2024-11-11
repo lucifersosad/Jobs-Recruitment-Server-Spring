@@ -63,14 +63,5 @@ public class UserController {
         return userService.getUserModel(userId);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<UserModel> updateUser(@RequestBody UserModel userModel) {
-        try {
-            UserModel updatedUser = userService.updateUser(userModel);
-            return ResponseEntity.ok(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
 
 }

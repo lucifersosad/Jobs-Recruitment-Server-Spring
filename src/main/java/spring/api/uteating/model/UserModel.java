@@ -14,19 +14,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserModel {
     private Long id;
-    @JsonProperty("full_name")
-    private String fullName;
+    private String full_name;
     private String email;
     private String avatar;
     private String phone;
     private String address;
-
-    public UserModel(User user) {
-        this.id = user.getUserId();
-        this.fullName = user.getFullName();
-        this.email = user.getEmail();
-        this.avatar = user.getAvatar();
-        this.phone = user.getPhone();
-        this.address = user.getAddress();
-    }
+    private String gender;
+    private boolean status;
 }

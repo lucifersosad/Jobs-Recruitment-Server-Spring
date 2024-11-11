@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.api.uteating.dto.ResponseDTO;
+import spring.api.uteating.mapper.EmployerMapper;
 import spring.api.uteating.model.EmployerModel;
 import spring.api.uteating.repository.EmployerRepository;
 import spring.api.uteating.service.EmployerService;
@@ -22,9 +23,15 @@ public class EmployerController {
     @Autowired
     private EmployerRepository employerRepository;
 
+    @Autowired
+    private EmployerMapper employerMapper;
+
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<EmployerModel>>> getAllEmployers() {
-        List<EmployerModel> data = employerService.getAllEmployers();
-        return ResponseUtil.successResponse(data, "Truy vấn thành công");
+    public List<EmployerModel> getEmployers() {
+        return employerService.getEmployers().stream().map(employerMapper::toEmployerModel).toList();
     }
+//    public ResponseEntity<ResponseDTO<List<EmployerModel>>> getAllEmployers() {
+//        List<EmployerModel> data = employerService.getAllEmployers();
+//        return ResponseUtil.successResponse(data, "Truy vấn thành công");
+//    }
 }
