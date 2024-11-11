@@ -13,5 +13,7 @@ public class ApiConfig {
     private String baseUrl;
     @Value("${prefix.ADMIN}")
     private String prefixAdmin;
+    @Value("${prefix.EMPLOYER}")
+    private String prefixEmployer;
 }
 

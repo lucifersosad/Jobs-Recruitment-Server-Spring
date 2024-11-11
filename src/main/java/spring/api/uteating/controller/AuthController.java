@@ -67,7 +67,7 @@ public class AuthController {
         );
         Map<String, Object> tokenDetails = jwtService.generateToken(authRequest.getEmail(), 2);
         UserModel userModel = new UserModel();
-        User user = userRepository.getUserByUsernameOrEmail(authRequest.getEmail());
+        User user = userRepository.getUserByEmail(authRequest.getEmail());
         BeanUtils.copyProperties(user, userModel);
 
         Map<String, Object> response = new HashMap<>(tokenDetails);

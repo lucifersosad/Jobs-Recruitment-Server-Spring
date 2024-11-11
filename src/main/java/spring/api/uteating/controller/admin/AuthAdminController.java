@@ -5,19 +5,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.api.uteating.dto.LoginDTO;
+import spring.api.uteating.entity.Admin;
 import spring.api.uteating.entity.Employer;
 import spring.api.uteating.entity.User;
 import spring.api.uteating.model.EmployerModel;
 import spring.api.uteating.model.SignInDTO;
 import spring.api.uteating.model.UserModel;
+import spring.api.uteating.repository.AdminRepository;
 import spring.api.uteating.repository.EmployerRepository;
-import spring.api.uteating.repository.RoleRepository;
 import spring.api.uteating.repository.UserRepository;
 import spring.api.uteating.service.JwtService;
 
@@ -27,7 +31,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("${api.BASE_URL}${prefix.ADMIN}/auth")
-public class AdminAuthController {
+public class AuthAdminController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -38,6 +42,9 @@ public class AdminAuthController {
     @Autowired
     private EmployerRepository employerRepository;
 
+    @Autowired
+    private AdminRepository adminRepository;
+
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -46,25 +53,29 @@ public class AdminAuthController {
     private JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody SignInDTO authRequest){
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDTO){
 
-        Optional<Employer> employerOptional = employerRepository.findByEmail(authRequest.getEmail());
+        Optional<Admin> opt = adminRepository.findByEmail(loginDTO.getEmail());
 
-        if (employerOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message", "Email không tồn tại"));
+        if (opt.isEmpty()) {
+            throw new UsernameNotFoundException("Tài khoản chưa đăng ký!");
         }
 
-        Map<String, Object> tokenDetails = jwtService.generateToken(authRequest.getEmail(), 1);
-        UserModel userModel = new UserModel();
-        EmployerModel employerModel = new EmployerModel();
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Mật khẩu không đúng");
+        }
 
-        User user1 = employerRepository.getEmployerByEmail(authRequest.getEmail());
-//        User user = userRepository.getUserByUsernameOrEmail(authRequest.getEmail());
-        BeanUtils.copyProperties(user1, employerModel);
-
+        Map<String, Object> tokenDetails = jwtService.generateToken(loginDTO.getEmail(), 1);
         Map<String, Object> response = new HashMap<>(tokenDetails);
-        response.put("info", user1);
+
+        Admin admin = opt.get();
+        UserModel userModel = new UserModel();
+        BeanUtils.copyProperties(admin, userModel);
+        userModel.setId(admin.getUserId());
+
+        response.put("info", userModel);
 
         return ResponseEntity.ok(response);
     }

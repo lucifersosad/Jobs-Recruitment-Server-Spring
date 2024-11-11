@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 
-        User user = userRepository.getUserByUsernameOrEmail(usernameOrEmail);
+        User user = userRepository.getUserByEmail(usernameOrEmail);
 
         if (user == null) {
             throw new UsernameNotFoundException("Cound not find user");
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     public User getUser(String username) {
-        return userRepository.getUserByUsernameOrEmail(username);
+        return userRepository.getUserByEmail(username);
     }
 
     public UserModel getUserModel(Long idUser) {
@@ -74,17 +74,6 @@ public class UserServiceImpl implements UserDetailsService {
             }
         }
         return null;
-    }
-
-    boolean isAdmin(User user) {
-        Set<Role> roles = user.getRoles();
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            if (role.getName().equals("ADMIN")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Deprecated
