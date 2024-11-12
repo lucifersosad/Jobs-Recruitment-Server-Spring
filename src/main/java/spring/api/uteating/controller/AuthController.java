@@ -7,15 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import spring.api.uteating.entity.Role;
 import spring.api.uteating.entity.User;
 import spring.api.uteating.model.SignInDTO;
 import spring.api.uteating.model.SignUpDTO;
 import spring.api.uteating.model.UserModel;
-import spring.api.uteating.repository.RoleRepository;
 import spring.api.uteating.repository.UserRepository;
 import spring.api.uteating.service.JwtService;
 
@@ -32,8 +29,7 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -45,20 +41,7 @@ public class AuthController {
     public String welcome() {
         return "Welcome bitch";
     }
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpDTO signUpDto) {
-        User user = new User();
-        BeanUtils.copyProperties(signUpDto, user);
-        user.setStatus(true);
-        user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        Role roles = roleRepository.findByName("USER").get();
-        user.setRoles(Collections.singleton(roles));
-
-        userRepository.save(user);
-
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody SignInDTO authRequest){

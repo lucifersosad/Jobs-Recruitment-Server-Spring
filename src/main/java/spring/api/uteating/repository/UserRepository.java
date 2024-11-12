@@ -10,4 +10,6 @@ import spring.api.uteating.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.email = :email")
     User getUserByEmail(@Param("email") String email);
+
+
 }
