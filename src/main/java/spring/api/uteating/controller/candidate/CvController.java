@@ -1,6 +1,7 @@
 package spring.api.uteating.controller.candidate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import spring.api.uteating.entity.Cv;
 import spring.api.uteating.service.CloudinaryService;
+import spring.api.uteating.utils.ResponseUtil;
 
 import java.security.Principal;
 
@@ -23,9 +25,9 @@ public class CvController {
         try {
             String email = principal.getName();
             Cv uploadedFile = cloudinaryService.uploadFile(file, email);
-            return ResponseEntity.ok(uploadedFile);
+            return ResponseUtil.successResponse(uploadedFile, "Upload CV thành công");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+            return ResponseUtil.errorResponse("Upload CV thất bại", HttpStatus.BAD_REQUEST);
         }
     }
 }

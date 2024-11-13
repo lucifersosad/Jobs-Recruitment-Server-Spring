@@ -28,28 +28,32 @@ public class EmployerController {
     private EmployerMapper employerMapper;
 
     @GetMapping
-    public List<EmployerModel> getEmployers() {
-        return employerService.getEmployers().stream().map(employerMapper::toEmployerModel).toList();
+    public ResponseEntity<?> getEmployers() {
+        List<EmployerModel> data = employerService.getEmployers().stream().map(employerMapper::toEmployerModel).toList();
+        return ResponseUtil.successResponse(data, "Truy vấn thành công");
     }
 
     @GetMapping("/{id}")
-    public EmployerModel getEmployer(@PathVariable Long id) {
+    public ResponseEntity<?> getEmployer(@PathVariable Long id) {
         Employer employer = employerService.validateAndGetEmployer(id);
-        return employerMapper.toEmployerModel(employer);
+        EmployerModel data = employerMapper.toEmployerModel(employer);
+        return ResponseUtil.successResponse(data, "Truy vấn thành công");
     }
 
     @PutMapping("/{id}/status")
-    public EmployerModel updateStatusEmployer(@PathVariable Long id, @Valid @RequestBody UpdateStatusRequest updateStatusRequest) {
+    public ResponseEntity<?> updateStatusEmployer(@PathVariable Long id, @Valid @RequestBody UpdateStatusRequest updateStatusRequest) {
         Employer employer = employerService.validateAndGetEmployer(id);
         employerMapper.updateStatusFromDto(updateStatusRequest, employer);
         employer = employerService.saveEmployer(employer);
-        return employerMapper.toEmployerModel(employer);
+        EmployerModel data = employerMapper.toEmployerModel(employer);
+        return ResponseUtil.successResponse(data, "Cập nhật trạng thái nhà tuyển dụng thành công");
     }
 
     @DeleteMapping("/{id}")
-    public EmployerModel deleteEmployer(@PathVariable Long id) {
+    public ResponseEntity<?> deleteEmployer(@PathVariable Long id) {
         Employer employer = employerService.validateAndGetEmployer(id);
         employerService.deleteEmployer(employer);
-        return employerMapper.toEmployerModel(employer);
+        EmployerModel data = employerMapper.toEmployerModel(employer);
+        return ResponseUtil.successResponse(data, "Xóa nhà tuyển dụng thành công");
     }
 }

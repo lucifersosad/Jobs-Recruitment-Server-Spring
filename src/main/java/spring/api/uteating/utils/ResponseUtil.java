@@ -15,12 +15,12 @@ public class ResponseUtil {
         ), HttpStatus.OK);
     }
 
-    public static <T> ResponseEntity<ResponseDTO<T>> errorResponse(T data, String message, HttpStatus status) {
+    public static <T> ResponseEntity<ResponseDTO<T>> errorResponse(String message, HttpStatus status) {
         return new ResponseEntity<>(new ResponseDTO<>(
                 status.value(),
                 false,
                 message,
-                data
+                null
         ), status);
     }
 }

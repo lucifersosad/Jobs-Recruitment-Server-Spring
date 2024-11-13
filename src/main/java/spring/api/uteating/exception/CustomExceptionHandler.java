@@ -46,4 +46,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         response.put("statusCode", 400);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleGlobalException(Exception ex) {
+        System.out.println(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.put("message", "Đã xảy ra lỗi ngoài ý muốn. Vui lòng thử lại sau.");
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
