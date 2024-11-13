@@ -15,5 +15,7 @@ public class ApiConfig {
     private String prefixAdmin;
     @Value("${prefix.EMPLOYER}")
     private String prefixEmployer;
+    @Value("${prefix.CANDIDATE")
+    private String prefixCandidate;
 }
 

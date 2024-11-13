@@ -62,9 +62,9 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/v1/api/employer/**").hasAnyAuthority("EMPLOYER")
                 .and()
-                .authorizeHttpRequests().requestMatchers("/v1/api/user/auth/**").permitAll()
+                .authorizeHttpRequests().requestMatchers("/v1/api/candidate/auth/**").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/v1/api/user/**").hasAnyAuthority("CANDIDATE")
+                .authorizeHttpRequests().requestMatchers("/v1/api/candidate/**").hasAnyAuthority("CANDIDATE")
                 .and()
                 .authorizeHttpRequests().requestMatchers("/**").permitAll()
                 .and()
@@ -75,14 +75,14 @@ public class WebSecurityConfig {
                 .authenticationEntryPoint((request, response, e) ->
                 {
 
-                    String jsonResponse = "{\"status\": 401, \"message\": \"Unauthorized\"}";
+                    String jsonResponse = "{\"status\": 401, \"message\": \"Unauthorized\"}"+"-";
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType("application/json");
                     response.getWriter().write(jsonResponse);
                 })
                 .accessDeniedHandler(((request, response, e) ->
                 {
-                    String jsonResponse = "{\"status\": 401, \"message\": \"Unauthorized\"}";
+                    String jsonResponse = "{\"status\": 401, \"message\": \"Unauthorized\"}"+"__";
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType("application/json");
                     response.getWriter().write(jsonResponse);
