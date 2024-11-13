@@ -1,13 +1,8 @@
 package spring.api.uteating.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import spring.api.uteating.entity.Role;
-import spring.api.uteating.entity.User;
-
-import java.util.Set;
 
 @Data
 @AllArgsConstructor

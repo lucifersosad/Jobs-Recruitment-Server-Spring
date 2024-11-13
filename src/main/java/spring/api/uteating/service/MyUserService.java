@@ -5,14 +5,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import spring.api.uteating.entity.Admin;
 import spring.api.uteating.entity.Employer;
-import spring.api.uteating.entity.Role;
 import spring.api.uteating.entity.User;
 
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class MyUserService implements UserDetails {
     @Serial

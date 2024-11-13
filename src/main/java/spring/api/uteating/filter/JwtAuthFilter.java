@@ -78,7 +78,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception ex) {
-            String jsonResponse = "{\"status\": 401, \"message\": \"Unauthorized\"}";
+            String jsonResponse = "{\"status\": 401, \"message\": \"Unauthorized\"}"+ex.getMessage();
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
             response.getWriter().write(jsonResponse);
