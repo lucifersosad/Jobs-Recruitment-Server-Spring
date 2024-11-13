@@ -43,12 +43,4 @@ public class User implements Serializable {
 
     @Column(columnDefinition = "BOOLEAN")
     private Boolean status;
-
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-
-
-
-    @JsonManagedReference
-    private List<Cv> cvs;
 }

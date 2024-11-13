@@ -8,40 +8,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cv")
+@Table(name = "cvs")
 
 public class Cv {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long Id;
-
-    @Column(name = "file_name")
-    private String FileName;
-
-
-
-    @Column(name = "file_type")
-    private String Type;
-
-
     @Column(name = "cv_id")
-    private String Cv_id;
+    private String cvId;
+
+    private String name;
+
+    private String type;
+
+    @Column(name = "origin_url")
+    private String originUrl;
 
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "upload_time", updatable = false)
-    private Date uploadTime;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
+    @CreationTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @JsonBackReference
-    private User user ;
+    private Candidate candidate;
 }

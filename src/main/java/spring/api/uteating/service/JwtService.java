@@ -34,7 +34,7 @@ public class JwtService {
     public Map<String, Object> generateToken(String userName, int roleId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role_id", roleId);
-        Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 1);
+        Date expirationDate = new Date(System.currentTimeMillis() + 1000 * 60 * 60);
         String token = createToken(claims, userName, expirationDate);
 
         Map<String, Object> tokenDetails = new HashMap<>();

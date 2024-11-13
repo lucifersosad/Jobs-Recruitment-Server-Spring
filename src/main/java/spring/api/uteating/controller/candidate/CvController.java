@@ -1,9 +1,7 @@
-package spring.api.uteating.controller.Candidate;
+package spring.api.uteating.controller.candidate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,26 +10,21 @@ import org.springframework.web.multipart.MultipartFile;
 import spring.api.uteating.entity.Cv;
 import spring.api.uteating.service.CloudinaryService;
 
-import java.io.IOException;
+import java.security.Principal;
 
 @RestController
-@RequestMapping("${api.BASE_URL}${prefix.ADMIN}")
-public class UploadCvController {
+@RequestMapping("${api.BASE_URL}${prefix.CANDIDATE}/cv")
+public class CvController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-
-
-    @PostMapping("/uploadCv")
-    public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file, @AuthenticationPrincipal UserDetails userDetails) {
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file, Principal principal) {
         try {
-            String email = userDetails.getUsername();
-            // Upload file và lưu thông tin vào DB
+            String email = principal.getName();
             Cv uploadedFile = cloudinaryService.uploadFile(file, email);
-
-            // Trả về thông tin file đã lưu trong DB
             return ResponseEntity.ok(uploadedFile);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
     }

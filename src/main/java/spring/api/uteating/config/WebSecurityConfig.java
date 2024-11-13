@@ -62,7 +62,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/v1/api/employer/**").hasAnyAuthority("EMPLOYER")
                 .and()
-                .authorizeHttpRequests().requestMatchers("/v1/api/user/auth/**").permitAll()
+                .authorizeHttpRequests().requestMatchers("/v1/api/candidate/auth/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/v1/api/candidate/**").hasAnyAuthority("CANDIDATE")
                 .and()

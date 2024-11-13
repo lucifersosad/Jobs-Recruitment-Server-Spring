@@ -16,12 +16,6 @@ public class EmployerService {
     @Autowired
     private EmployerRepository employerRepository;
 
-//    public List<EmployerModel> getAllEmployers() {
-//        return employerRepository.findAll().stream()
-//                .map(EmployerModel::new)
-//                .collect(Collectors.toList());
-//    }
-
     public List<Employer> getEmployers() {
         return employerRepository.findAll();
     }
